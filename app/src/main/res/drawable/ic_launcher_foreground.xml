@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Football / Soccer ball icon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,18a36,36 0,1 1,0 72,36 36,0 0,1 0,-72z" />
+    <path
+        android:fillColor="#222222"
+        android:pathData="M54,24 L66,36 L62,50 L46,50 L42,36 Z" />
+    <path
+        android:fillColor="#222222"
+        android:pathData="M66,36 L80,38 L82,54 L70,62 L62,50 Z" />
+    <path
+        android:fillColor="#222222"
+        android:pathData="M42,36 L28,38 L26,54 L38,62 L46,50 Z" />
+    <path
+        android:fillColor="#222222"
+        android:pathData="M38,62 L34,76 L48,82 L54,70 L46,62 Z" />
+    <path
+        android:fillColor="#222222"
+        android:pathData="M70,62 L74,76 L60,82 L54,70 L62,62 Z" />
+</vector>
