@@ -89,6 +89,10 @@ dependencies {
     kspTest(libs.room.compiler)
     kspAndroidTest(libs.room.compiler)
 
+    // QR code generation and scanning
+    implementation("com.google.zxing:core:3.5.2")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0") { isTransitive = false }
+
     debugImplementation(libs.androidx.ui.tooling)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)

@@ -2,7 +2,8 @@ package com.wc2026stickers.app.ui.friendmatcher
 
 import com.wc2026stickers.app.data.db.dao.StickerWithQuantity
 
-private val stickerIdCandidatePattern = Regex("\\b[A-Za-z]{2,3}-?\\d+\\b")
+// Matches sticker codes optionally followed by xN quantity suffix (from QR codes)
+private val stickerIdCandidatePattern = Regex("\\b([A-Za-z]{2,3}-?\\d+)(?:[xX](\\d+))?\\b")
 
 data class CountedStickerCode(
     val code: String,
@@ -33,8 +34,24 @@ data class FriendListMatcherResult(
         get() = invalid.sumOf { it.count }
 }
 
-fun extractFriendStickerCandidates(input: String): List<String> =
-    stickerIdCandidatePattern.findAll(input).map { it.value.normalizeStickerCode() }.toList()
+/**
+ * Extracts sticker codes from free text or QR-format strings.
+ * Handles plain codes (ARG1, ARG-1) and QR quantity format (ARG1x2 → two copies of ARG1).
+ * Returns a flat list of codes, repeating entries to represent quantity.
+ */
+fun extractFriendStickerCandidates(input: String): List<String> {
+    // Strip the WC2026: prefix if scanning from a generated QR code
+    val normalizedInput = if (input.startsWith("WC2026:", ignoreCase = true)) {
+        input.substring(7)
+    } else {
+        input
+    }
+    return stickerIdCandidatePattern.findAll(normalizedInput).flatMap { match ->
+        val code = match.groupValues[1].normalizeStickerCode()
+        val qty = match.groupValues[2].toIntOrNull()?.coerceAtLeast(1) ?: 1
+        List(qty) { code }
+    }.toList()
+}
 
 suspend fun buildFriendListMatcherResult(
     input: String,

@@ -1,5 +1,6 @@
 package com.wc2026stickers.app.ui.friendmatcher
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,6 +49,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import com.wc2026stickers.app.data.db.dao.StickerWithQuantity
 import com.wc2026stickers.app.ui.collection.confederationDisplayLabel
 import com.wc2026stickers.app.ui.collection.stickerTypeDisplayLabel
@@ -66,6 +70,10 @@ fun FriendMatcherScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    val qrScanLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
+        result.contents?.let { viewModel.onInputChanged(it) }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -75,10 +83,31 @@ fun FriendMatcherScreen(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            qrScanLauncher.launch(
+                                ScanOptions().apply {
+                                    setPrompt("Scan a friend's duplicate QR code")
+                                    setBeepEnabled(false)
+                                    setOrientationLocked(true)
+                                    setBarcodeImageEnabled(false)
+                                }
+                            )
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.QrCodeScanner,
+                            contentDescription = "Scan friend's duplicate QR code",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },
@@ -230,7 +259,7 @@ private fun MatcherIntroCard(modifier: Modifier = Modifier) {
         ) {
             Text("How it works", fontWeight = FontWeight.Bold)
             Text(
-                "Paste a friend's duplicate list and this screen will match it offline against the stickers you still need.",
+                "Scan a friend's duplicate QR code (tap the scanner icon above), or paste their duplicate list manually.",
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(

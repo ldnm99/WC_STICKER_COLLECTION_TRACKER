@@ -2,6 +2,7 @@ package com.wc2026stickers.app.ui.duplicates
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.wc2026stickers.app.data.db.dao.StickerWithQuantity
 import com.wc2026stickers.app.data.repository.StickerRepository
 import com.wc2026stickers.app.ui.collection.StickerCollectionFilterState
 import com.wc2026stickers.app.ui.collection.StickerCollectionSortOption
@@ -38,4 +39,20 @@ class DuplicatesViewModel @Inject constructor(
     fun setFilters(filterState: StickerCollectionFilterState) {
         filters.value = filterState
     }
+}
+
+/**
+ * Encodes a list of duplicate stickers as a compact QR-friendly string.
+ * Format: `WC2026:ARG1x2,BRA7,FWC9x3`
+ * Only includes stickers with quantity > 1 (true duplicates = qty - 1 spare copies).
+ */
+fun generateQrContent(stickers: List<StickerWithQuantity>): String {
+    val codes = stickers
+        .filter { it.quantityOwned > 1 }
+        .sortedBy { it.id }
+        .joinToString(",") { sticker ->
+            val spares = sticker.quantityOwned - 1
+            if (spares > 1) "${sticker.id}x$spares" else sticker.id
+        }
+    return "WC2026:$codes"
 }
