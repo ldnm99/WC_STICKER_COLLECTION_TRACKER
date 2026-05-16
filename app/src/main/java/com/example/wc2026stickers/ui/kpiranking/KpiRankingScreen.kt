@@ -57,8 +57,8 @@ fun KpiRankingScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }

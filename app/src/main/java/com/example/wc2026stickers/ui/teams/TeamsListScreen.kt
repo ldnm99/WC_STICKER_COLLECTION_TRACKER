@@ -5,12 +5,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,7 +19,6 @@ import com.wc2026stickers.app.ui.components.TeamProgressRow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeamsListScreen(
-    onBack: () -> Unit,
     onTeamClick: (String) -> Unit,
     onNavigateToQuickAdd: () -> Unit,
     viewModel: TeamsViewModel = hiltViewModel()
@@ -41,15 +38,9 @@ fun TeamsListScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Teams", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },

@@ -31,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
@@ -77,8 +76,8 @@ fun MissingScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },
@@ -93,7 +92,7 @@ fun MissingScreen(
                     },
                     containerColor = MaterialTheme.colorScheme.error
                 ) {
-                    Icon(Icons.Default.ContentCopy, contentDescription = "Copy missing stickers list", tint = Color.White)
+                    Icon(Icons.Default.ContentCopy, contentDescription = "Copy missing stickers list", tint = MaterialTheme.colorScheme.onError)
                 }
             }
         }

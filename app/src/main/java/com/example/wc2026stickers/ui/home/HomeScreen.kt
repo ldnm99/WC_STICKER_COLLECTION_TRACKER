@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
@@ -42,12 +46,10 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigateToTeams: () -> Unit,
     onNavigateToTeam: (String) -> Unit,
     onNavigateToMissing: () -> Unit,
     onNavigateToFriendMatcher: () -> Unit,
     onNavigateToDuplicates: () -> Unit,
-    onNavigateToQuickAdd: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToKpiRanking: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
@@ -81,7 +83,7 @@ fun HomeScreen(
         topBar = {
             Column {
                 TopAppBar(
-                    title = { Text("⚽ WC 2026 Stickers", fontWeight = FontWeight.Bold) },
+                    title = { Text("WC 2026 Stickers", fontWeight = FontWeight.Bold) },
                     actions = {
                         CollectionBackupMenu(
                             enabled = !state.isBackupInProgress,
@@ -95,22 +97,14 @@ fun HomeScreen(
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = Color.White,
-                        actionIconContentColor = Color.White
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
                 if (state.isBackupInProgress) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
             }
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = onNavigateToQuickAdd,
-                icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                text = { Text("Quick Add") },
-                containerColor = MaterialTheme.colorScheme.secondary
-            )
         }
     ) { padding ->
         state.pendingRestorePreview?.let { preview ->
@@ -163,38 +157,62 @@ fun HomeScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Collection progress
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Text("Collection Progress", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Spacer(modifier = Modifier.height(12.dp))
+            // Hero: Collection progress
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(
+                                "Collection",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                            )
+                            Text(
+                                "${(progress * 100).toInt()}%",
+                                style = MaterialTheme.typography.displaySmall,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.semantics {
+                                    progressBarRangeInfo = ProgressBarRangeInfo(progress, 0f..1f)
+                                }
+                            )
+                        }
+                        Column(
+                            horizontalAlignment = Alignment.End,
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
+                            Text(
+                                "${state.collectedCount} / ${state.totalCount}",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                            val remaining = state.totalCount - state.collectedCount
+                            Text(
+                                if (remaining > 0) "$remaining to go" else "Complete! 🎉",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                            )
+                        }
+                    }
                     LinearProgressIndicator(
                         progress = { progress },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(12.dp)
-                            .semantics {
-                                progressBarRangeInfo = ProgressBarRangeInfo(progress, 0f..1f)
-                            },
-                        color = MaterialTheme.colorScheme.primary
+                            .height(10.dp),
+                        color = MaterialTheme.colorScheme.secondary,
+                        trackColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25f)
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            "${state.collectedCount} / ${state.totalCount} stickers",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            "${(progress * 100).toInt()}%",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
                 }
             }
 
@@ -225,34 +243,25 @@ fun HomeScreen(
 
             FavoriteTeamsSection(
                 favoriteTeams = state.favoriteTeams,
-                onOpenTeam = onNavigateToTeam,
-                onBrowseTeams = onNavigateToTeams
+                onOpenTeam = onNavigateToTeam
             )
 
-            CollectionHistorySection(history = state.collectionHistory)
-
-            // Navigation grid
-            Text("Browse", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            // Quick actions
+            Text("Quick Actions", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                HomeNavCard(
-                    emoji = "🏆",
-                    label = "Teams",
-                    onClick = onNavigateToTeams,
-                    modifier = Modifier.weight(1f)
-                )
-                HomeNavCard(
-                    emoji = "❌",
+                QuickActionCard(
+                    icon = Icons.AutoMirrored.Filled.List,
                     label = "Missing",
                     badge = if (state.missingCount > 0) "${state.missingCount}" else null,
                     onClick = onNavigateToMissing,
                     modifier = Modifier.weight(1f)
                 )
-                HomeNavCard(
-                    emoji = "📋",
+                QuickActionCard(
+                    icon = Icons.Default.ContentCopy,
                     label = "Duplicates",
                     badge = if (state.duplicatesCount > 0) "${state.duplicatesCount}" else null,
                     onClick = onNavigateToDuplicates,
@@ -263,25 +272,21 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                HomeNavCard(
-                    emoji = "🤝",
+                QuickActionCard(
+                    icon = Icons.Default.People,
                     label = "Friend\nMatcher",
                     onClick = onNavigateToFriendMatcher,
                     modifier = Modifier.weight(1f)
                 )
-                HomeNavCard(
-                    emoji = "🔍",
+                QuickActionCard(
+                    icon = Icons.Default.Search,
                     label = "Search",
                     onClick = onNavigateToSearch,
                     modifier = Modifier.weight(1f)
                 )
-                HomeNavCard(
-                    emoji = "➕",
-                    label = "Quick Add",
-                    onClick = onNavigateToQuickAdd,
-                    modifier = Modifier.weight(1f)
-                )
             }
+
+            CollectionHistorySection(history = state.collectionHistory)
 
             KpiInsightsSection(
                 insights = state.kpiInsights,
@@ -485,50 +490,26 @@ private val HISTORY_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPatt
 private fun FavoriteTeamsSection(
     favoriteTeams: List<FavoriteTeamHighlight>,
     onOpenTeam: (String) -> Unit,
-    onBrowseTeams: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Favorite teams", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            Text(
-                text = if (favoriteTeams.isEmpty()) {
-                    "Star teams from the Teams screen to pin quick shortcuts here."
-                } else {
-                    "Jump back into the teams you care about most."
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-            )
-        }
+        Text("Favorite Teams", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
 
         if (favoriteTeams.isEmpty()) {
-            OutlinedCard(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = onBrowseTeams
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "No favorites yet",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "Browse teams and tap the star on any team to keep it handy on the home screen.",
+                        text = "Star teams from the Teams tab to pin quick shortcuts here.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = "Open Teams",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }
@@ -870,50 +851,45 @@ private fun insightPriorityColor(priority: KpiPriority): Color = when (priority)
 }
 
 @Composable
-private fun HomeNavCard(
-    emoji: String,
+private fun QuickActionCard(
+    icon: ImageVector,
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     badge: String? = null
 ) {
-    Card(
-        onClick = onClick,
-        modifier = modifier
-    ) {
+    Card(onClick = onClick, modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 88.dp)
-                .padding(vertical = 12.dp, horizontal = 8.dp),
+                .padding(vertical = 14.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(emoji, style = MaterialTheme.typography.titleLarge)
-            Spacer(Modifier.height(4.dp))
+            BadgedBox(
+                badge = {
+                    if (badge != null) {
+                        Badge { Text(badge) }
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+            Spacer(Modifier.height(6.dp))
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            if (badge != null) {
-                Spacer(Modifier.height(4.dp))
-                Surface(
-                    shape = MaterialTheme.shapes.small,
-                    color = MaterialTheme.colorScheme.secondaryContainer
-                ) {
-                    Text(
-                        text = badge,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
         }
     }
 }

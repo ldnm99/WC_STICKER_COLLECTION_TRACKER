@@ -153,7 +153,7 @@ fun StatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.ExtraBold,
                 color = color
             )
@@ -239,14 +239,6 @@ fun TeamProgressRow(
                             progressBarRangeInfo = ProgressBarRangeInfo(progress, 0f..1f)
                         },
                     color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = actionHint,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
             }
         },

@@ -55,15 +55,15 @@ fun SearchScreen(
                         singleLine = true,
                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.White.copy(alpha = 0.6f),
-                            unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            cursorColor = Color.White,
-                            focusedPlaceholderColor = Color.White.copy(alpha = 0.6f),
-                            unfocusedPlaceholderColor = Color.White.copy(alpha = 0.6f),
-                            focusedLeadingIconColor = Color.White,
-                            unfocusedLeadingIconColor = Color.White.copy(alpha = 0.7f)
+                            focusedBorderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.3f),
+                            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                            cursorColor = MaterialTheme.colorScheme.onPrimary,
+                            focusedPlaceholderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                            focusedLeadingIconColor = MaterialTheme.colorScheme.onPrimary,
+                            unfocusedLeadingIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -77,8 +77,8 @@ fun SearchScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }

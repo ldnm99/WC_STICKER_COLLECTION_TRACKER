@@ -14,7 +14,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -49,7 +48,7 @@ fun TeamDetailScreen(
                         Text(
                             "$collectedCount / ${stickers.size} collected",
                             style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.8f)
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                         )
                     }
                 },
@@ -75,9 +74,9 @@ fun TeamDetailScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White,
-                    actionIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },

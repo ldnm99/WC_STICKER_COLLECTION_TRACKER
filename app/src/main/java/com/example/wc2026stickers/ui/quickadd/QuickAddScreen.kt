@@ -21,7 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuickAddScreen(
-    onBack: () -> Unit,
+    onBack: (() -> Unit)? = null,
     viewModel: QuickAddViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -31,14 +31,16 @@ fun QuickAddScreen(
             TopAppBar(
                 title = { Text("Quick Add", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    onBack?.let { back ->
+                        IconButton(onClick = back) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }
