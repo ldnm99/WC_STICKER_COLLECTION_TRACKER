@@ -1,4 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WC 2026 Stickers</string>
+
+    <!-- Notification channel names (future use) -->
+    <string name="channel_general_name">General</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_quick_add">Quick add stickers</string>
+    <string name="cd_copy_list">Copy list to clipboard</string>
+    <string name="cd_backup_options">Backup and restore options</string>
+
+    <!-- Play Store short description (80 chars max) -->
+    <string name="play_short_description">Track your FIFA World Cup 2026 Panini sticker collection. 980 stickers, 48 teams.</string>
+
+    <!-- Play Store full description (4000 chars max) — copy/paste this into Play Console -->
+    <!--
+📦 WC 2026 Stickers — Your Panini Collection Tracker
+
+The ultimate companion app for collectors of the official FIFA World Cup 2026™ Panini sticker album.
+Track every sticker across all 48 national teams and the exclusive FWC special section — 980 stickers in total.
+
+🏆 BROWSE BY TEAM
+Navigate teams organized by confederation (UEFA, CONMEBOL, CONCACAF, CAF, AFC, OFC).
+Each team shows a live progress bar so you always know how close you are to completing it.
+Tap any team to open its full sticker grid and manage quantities one by one.
+
+⚡ QUICK ADD — LOG A WHOLE PACKET IN SECONDS
+Received a new pack of stickers? Type the IDs all at once (e.g. ARG1 ENG5 FWC9 MAR7) and tap Add.
+Valid stickers appear as green chips, unknown codes appear in red so you never mistype.
+After adding, a session summary shows exactly what was new, what became a duplicate, and which teams got closer to completion.
+
+❌ MISSING STICKERS
+See the full list of stickers you still need, grouped by team.
+Share or copy the list to send to a friend before a trading session.
+
+📋 DUPLICATES LIST
+Every sticker you own more than one copy of is listed here with the exact count of extras.
+Use this during trades to know exactly what you can offer.
+
+🤝 FRIEND MATCHER
+Compare your duplicates with a friend's missing list to find the perfect matches.
+Maximise every trading session and complete your album faster.
+
+🔍 SEARCH COLLECTION
+Find any sticker instantly by sticker ID, team name, or player/card label.
+Filter, sort, and browse your entire collection in seconds.
+
+📈 KPI RANKINGS
+Curious which team you're closest to completing? Or which section has the most duplicates?
+The KPI screen breaks down your collection by confederation, completion %, and duplicate leaders.
+
+📊 HOME DASHBOARD
+At a glance: total collected, missing, duplicates, and your top favourite teams with progress bars.
+Your collection stats update in real time as you add stickers.
+
+💾 100% OFFLINE — NO ACCOUNT NEEDED
+All your data is stored locally on your device using a fast SQLite database.
+No internet connection required, no sign-up, no tracking, no ads.
+
+---
+
+STICKER BREAKDOWN
+⭐ FWC Special — 20 stickers
+🌍 UEFA — 16 teams, 320 stickers
+🌎 CONMEBOL — 6 teams, 120 stickers
+🌎 CONCACAF — 6 teams (incl. hosts USA, Canada, Mexico), 120 stickers
+🌍 CAF — 10 teams, 200 stickers
+🌏 AFC — 9 teams, 180 stickers
+🌏 OFC — 1 team, 20 stickers
+Total: 48 teams · 980 stickers
+
+---
+
+Perfect for any Panini World Cup 2026 collector who wants to stay organised and trade smarter.
+Download free. No ads. No internet. Just your album.
+    -->
+
 </resources>

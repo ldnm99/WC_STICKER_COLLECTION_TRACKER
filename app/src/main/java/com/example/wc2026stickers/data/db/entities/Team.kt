@@ -1,4 +1,4 @@
-package com.example.wc2026stickers.data.db.entities
+﻿package com.wc2026stickers.app.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,5 +9,6 @@ data class Team(
     val name: String,                    // e.g. "Argentina"
     val flagEmoji: String,               // e.g. "🇦🇷"
     val confederation: String,           // e.g. "CONMEBOL"
-    val sortOrder: Int                   // for display ordering
+    val sortOrder: Int,                  // for display ordering
+    val isFavorite: Boolean = false
 )

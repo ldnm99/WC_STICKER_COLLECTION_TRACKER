@@ -1,4 +1,4 @@
-package com.example.wc2026stickers.data.db.entities
+﻿package com.wc2026stickers.app.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

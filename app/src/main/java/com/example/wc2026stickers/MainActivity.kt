@@ -1,11 +1,11 @@
-package com.example.wc2026stickers
+﻿package com.wc2026stickers.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.wc2026stickers.navigation.AppNavigation
-import com.example.wc2026stickers.ui.theme.WC2026Theme
+import com.wc2026stickers.app.navigation.AppNavigation
+import com.wc2026stickers.app.ui.theme.WC2026Theme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

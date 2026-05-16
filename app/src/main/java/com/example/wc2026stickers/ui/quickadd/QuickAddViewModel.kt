@@ -1,8 +1,8 @@
-package com.example.wc2026stickers.ui.quickadd
+﻿package com.wc2026stickers.app.ui.quickadd
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wc2026stickers.data.repository.StickerRepository
+import com.wc2026stickers.app.data.repository.StickerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ data class QuickAddUiState(
     val inputText: String = "",
     val entries: List<ParsedEntry> = emptyList(),
     val addedCount: Int = 0,
-    val showSuccess: Boolean = false
+    val sessionSummary: QuickAddSessionSummary? = null
 )
 
 @HiltViewModel
@@ -33,7 +33,7 @@ class QuickAddViewModel @Inject constructor(
     val uiState: StateFlow<QuickAddUiState> = _uiState.asStateFlow()
 
     fun onInputChanged(text: String) {
-        _uiState.update { it.copy(inputText = text, showSuccess = false) }
+        _uiState.update { it.copy(inputText = text, addedCount = 0, sessionSummary = null) }
         viewModelScope.launch { parseInput(text) }
     }
 
@@ -47,24 +47,37 @@ class QuickAddViewModel @Inject constructor(
     }
 
     fun addAll() {
-        val validEntries = _uiState.value.entries.filter { it.stickerId != null }
-        if (validEntries.isEmpty()) return
+        val groupedStickerIds = _uiState.value.entries
+            .mapNotNull { it.stickerId }
+            .groupingBy { it }
+            .eachCount()
+        if (groupedStickerIds.isEmpty()) return
         viewModelScope.launch {
-            validEntries.forEach { entry ->
-                repository.incrementSticker(entry.stickerId!!)
+            val teamStatsBefore = repository.getTeamKpiStatsSnapshot()
+            val stickerSnapshots = groupedStickerIds.map { (stickerId, quantityAdded) ->
+                QuickAddStickerSnapshot(
+                    stickerId = stickerId,
+                    quantityBefore = repository.getOwnedQuantity(stickerId),
+                    quantityAdded = quantityAdded
+                )
             }
+            groupedStickerIds.forEach { (stickerId, quantityAdded) ->
+                repository.incrementSticker(stickerId, quantityAdded)
+            }
+            val teamStatsAfter = repository.getTeamKpiStatsSnapshot()
+            val sessionSummary = calculateQuickAddSessionSummary(
+                stickerSnapshots = stickerSnapshots,
+                teamStatsBefore = teamStatsBefore,
+                teamStatsAfter = teamStatsAfter
+            )
             _uiState.update {
                 it.copy(
                     inputText = "",
                     entries = emptyList(),
-                    addedCount = validEntries.size,
-                    showSuccess = true
+                    addedCount = groupedStickerIds.values.sum(),
+                    sessionSummary = sessionSummary
                 )
             }
         }
-    }
-
-    fun dismissSuccess() {
-        _uiState.update { it.copy(showSuccess = false) }
     }
 }

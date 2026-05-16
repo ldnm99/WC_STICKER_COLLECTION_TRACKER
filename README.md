@@ -8,13 +8,14 @@ Know exactly what you're missing, what you have doubles of, and quickly log new 
 
 ## Features
 
-- 📋 **Full sticker checklist** — all 979 stickers across 48 teams + FWC special section
+- 📋 **Full sticker checklist** — all 980 stickers across 48 teams + FWC special section
 - ✅ **Mark owned stickers** — tap any sticker card to set your quantity
 - 🔁 **Duplicate tracking** — know exactly how many extras you have per sticker (for trading)
 - ❌ **Missing stickers list** — see at a glance what you still need
-- ⚡ **Quick Add** — type sticker IDs like `ARG1 ENG5 FWC9` to log a whole packet at once
+- ⚡ **Quick Add** — type sticker IDs like `ARG1 ENG5 FWC9` to log a whole packet at once, then review a lightweight session summary
 - 🌍 **Browse by team** — teams grouped by confederation with per-team progress
 - 📊 **Collection progress** — live stats on home screen (collected / missing / duplicates)
+- 📈 **KPI insights** — see sticker counts per section, most completed team, and duplicate leaders
 - 💾 **100% offline** — all data stored locally, nothing sent to the internet
 
 ---
@@ -23,14 +24,14 @@ Know exactly what you're missing, what you have doubles of, and quickly log new 
 
 | Confederation | Teams | Stickers |
 |---|---|---|
-| ⭐ Special (FWC) | — | 19 |
+| ⭐ Special (FWC) | — | 20 |
 | 🌎 CONCACAF | Mexico, USA, Canada *(hosts)*, Panama, Curaçao, Haiti | 120 |
 | 🌍 UEFA | England, France, Spain, Germany, Netherlands, Portugal, Belgium, Croatia, Switzerland, Austria, Norway, Scotland, Sweden, Türkiye, Bosnia & Herzegovina, Czechia | 320 |
 | 🌎 CONMEBOL | Argentina, Brazil, Uruguay, Colombia, Ecuador, Paraguay | 120 |
 | 🌍 CAF | Morocco, Senegal, Egypt, Tunisia, Ghana, Côte d'Ivoire, Algeria, Cape Verde, South Africa, DR Congo | 200 |
 | 🌏 AFC | Japan, South Korea, Iran, Australia, Saudi Arabia, Qatar, Uzbekistan, Iraq, Jordan | 180 |
 | 🌏 OFC | New Zealand | 20 |
-| **Total** | **48 teams** | **979 stickers** |
+| **Total** | **48 teams** | **980 stickers** |
 
 Each team has **20 stickers**: Badge (foil) · Team Photo · 18 Players
 
@@ -68,9 +69,10 @@ Each team has **20 stickers**: Badge (foil) · Team Photo · 18 Players
    - **Emulator:** Go to *Device Manager → Create Device* (recommend Pixel 6, API 33+)
 
 4. **Run the app**
-   - Click the green ▶ **Run** button (or press `Shift+F10`)
-   - Select your device
-   - The app will build and launch automatically
+    - Click the green ▶ **Run** button (or press `Shift+F10`)
+    - Select your device
+    - The app will build and launch automatically
+    - Or build from the terminal on Windows with `.\gradlew.bat assembleDebug`
 
 > On first launch the app seeds the full sticker database. This takes ~1–2 seconds and happens only once.
 
@@ -101,6 +103,7 @@ If you have a pre-built `.apk` file:
    - Examples: `ARG1`, `ENG15`, `FWC9`, `MAR7`
 3. Valid IDs appear as **green chips**, unrecognized ones as **red chips**
 4. Tap **Add to Collection** — each sticker's count increases by 1
+5. Review the session summary to see what was new, what turned into duplicates, and which teams moved closer to completion
 
 ### Checking your duplicates (for trading)
 
@@ -140,7 +143,7 @@ If you have a pre-built `.apk` file:
 ## Project Structure
 
 ```
-app/src/main/java/com/example/wc2026stickers/
+app/src/main/java/com/wc2026stickers/app/
 ├── data/
 │   ├── db/
 │   │   ├── AppDatabase.kt          # Room database

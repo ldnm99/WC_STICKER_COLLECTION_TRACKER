@@ -1,4 +1,4 @@
-package com.example.wc2026stickers.data.db.entities
+﻿package com.wc2026stickers.app.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -15,5 +15,7 @@ import androidx.room.PrimaryKey
 )
 data class UserSticker(
     @PrimaryKey val stickerId: String,   // FK → Sticker.id
-    val quantityOwned: Int = 0           // 0=missing, 1=have it, 2+=duplicates
+    val quantityOwned: Int = 0,          // 0=missing, 1=have it, 2+=duplicates
+    val firstCollectedAt: Long? = null,
+    val lastUpdatedAt: Long? = null
 )

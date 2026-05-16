@@ -1,4 +1,4 @@
-package com.example.wc2026stickers.ui.components
+﻿package com.wc2026stickers.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -6,19 +6,27 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.wc2026stickers.data.db.dao.StickerWithQuantity
-import com.example.wc2026stickers.data.db.entities.StickerType
+import com.wc2026stickers.app.data.db.dao.StickerWithQuantity
+import com.wc2026stickers.app.data.db.entities.StickerType
 
 @Composable
 fun StickerCard(
@@ -45,7 +53,19 @@ fun StickerCard(
                 color = if (sticker.isShiny) MaterialTheme.colorScheme.secondary else Color.Transparent,
                 shape = RoundedCornerShape(8.dp)
             )
-            .clickable(onClick = onClick),
+            .clickable(onClickLabel = "Update ${sticker.label} quantity", onClick = onClick)
+            .semantics {
+                contentDescription = buildString {
+                    append("${sticker.teamCode}-${sticker.number}, ${sticker.label}")
+                    append(", ${stickerTypeLabel(sticker.stickerType)}")
+                    if (sticker.isShiny) append(", shiny")
+                }
+                stateDescription = when {
+                    isDuplicate -> "${sticker.quantityOwned} owned, includes duplicates"
+                    isOwned -> "Collected"
+                    else -> "Missing"
+                }
+            },
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -72,7 +92,7 @@ fun StickerCard(
             )
             Text(
                 text = sticker.label,
-                style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp),
+                style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
                 color = textColor,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
@@ -154,13 +174,35 @@ fun TeamProgressRow(
     confederation: String,
     collected: Int,
     total: Int,
+    isFavorite: Boolean,
     onClick: () -> Unit,
+    onToggleFavorite: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val progress = if (total > 0) collected.toFloat() / total else 0f
+    val remaining = (total - collected).coerceAtLeast(0)
+    val actionLabel = when {
+        total == 0 -> "Open"
+        collected == total -> "Done"
+        collected == 0 -> "Start"
+        remaining in 1..3 -> "$remaining left"
+        else -> "Review"
+    }
+    val actionHint = when {
+        total == 0 -> "Open this team section"
+        collected == total -> "Section complete — open to review details"
+        collected == 0 -> "Start this team by adding your first sticker"
+        remaining in 1..3 -> "Finish line: $remaining sticker${if (remaining == 1) "" else "s"} left"
+        else -> "Tap to review missing stickers and keep this team moving"
+    }
 
     ListItem(
-        modifier = modifier.clickable(onClick = onClick),
+        modifier = modifier
+            .clickable(onClickLabel = "Open $name sticker list", onClick = onClick)
+            .semantics {
+                contentDescription = "$name, ${confederationLabel(confederation)}"
+                stateDescription = "$collected of $total stickers collected. $actionHint"
+            },
         leadingContent = {
             Text(text = flag, fontSize = 28.sp)
         },
@@ -192,15 +234,82 @@ fun TeamProgressRow(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp)),
+                        .clip(RoundedCornerShape(2.dp))
+                        .semantics {
+                            progressBarRangeInfo = ProgressBarRangeInfo(progress, 0f..1f)
+                        },
                     color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = actionHint,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         },
         trailingContent = {
-            if (collected == total) {
-                Text("✅", fontSize = 20.sp)
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                IconButton(
+                    onClick = onToggleFavorite,
+                    modifier = Modifier.semantics {
+                        contentDescription = if (isFavorite) {
+                            "Remove $name from favorite teams"
+                        } else {
+                            "Add $name to favorite teams"
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.StarOutline,
+                        contentDescription = null,
+                        tint = if (isFavorite) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outline
+                    )
+                }
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = if (collected == total) {
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+                    } else {
+                        MaterialTheme.colorScheme.secondaryContainer
+                    }
+                ) {
+                    Text(
+                        text = actionLabel,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = if (collected == total) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        }
+                    )
+                }
             }
         }
     )
+}
+
+private fun stickerTypeLabel(type: StickerType): String = when (type) {
+    StickerType.BADGE -> "badge"
+    StickerType.TEAM_PHOTO -> "team photo"
+    StickerType.PLAYER -> "player"
+    StickerType.SPECIAL -> "special sticker"
+}
+
+private fun confederationLabel(confederation: String): String = when (confederation) {
+    "SPECIAL" -> "Special stickers"
+    "CONCACAF" -> "CONCACAF"
+    "UEFA" -> "UEFA"
+    "CONMEBOL" -> "CONMEBOL"
+    "CAF" -> "CAF"
+    "AFC" -> "AFC"
+    "OFC" -> "OFC"
+    else -> confederation
 }

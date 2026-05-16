@@ -1,7 +1,7 @@
-package com.example.wc2026stickers.data.db
+﻿package com.wc2026stickers.app.data.db
 
 import androidx.room.TypeConverter
-import com.example.wc2026stickers.data.db.entities.StickerType
+import com.wc2026stickers.app.data.db.entities.StickerType
 
 class Converters {
     @TypeConverter
