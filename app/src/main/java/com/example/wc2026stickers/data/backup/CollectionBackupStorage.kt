@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.backup
+package com.wc2026stickers.app.data.backup
 
 import android.content.Context
 import android.net.Uri

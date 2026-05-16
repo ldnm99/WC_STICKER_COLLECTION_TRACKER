@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.search
+package com.wc2026stickers.app.ui.search
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

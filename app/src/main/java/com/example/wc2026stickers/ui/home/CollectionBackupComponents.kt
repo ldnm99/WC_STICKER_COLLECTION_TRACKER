@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.home
+package com.wc2026stickers.app.ui.home
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons

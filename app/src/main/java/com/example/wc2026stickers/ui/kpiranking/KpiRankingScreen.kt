@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.kpiranking
+package com.wc2026stickers.app.ui.kpiranking
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

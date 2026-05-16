@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.missing
+package com.wc2026stickers.app.ui.missing
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

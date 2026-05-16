@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app
+package com.wc2026stickers.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

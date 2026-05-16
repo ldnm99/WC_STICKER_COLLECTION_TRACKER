@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.seed
+package com.wc2026stickers.app.data.seed
 
 object SeedLabelCatalog {
     // Auto-generated from paste-1777894800044.txt — 980 sticker labels

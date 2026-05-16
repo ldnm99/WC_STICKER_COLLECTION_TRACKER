@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.missing
+package com.wc2026stickers.app.ui.missing
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

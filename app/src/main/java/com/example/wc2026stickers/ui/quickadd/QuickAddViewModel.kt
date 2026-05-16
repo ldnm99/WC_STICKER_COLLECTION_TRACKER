@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.quickadd
+package com.wc2026stickers.app.ui.quickadd
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

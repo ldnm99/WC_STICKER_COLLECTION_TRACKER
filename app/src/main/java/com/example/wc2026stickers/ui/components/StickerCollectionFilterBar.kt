@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.components
+package com.wc2026stickers.app.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

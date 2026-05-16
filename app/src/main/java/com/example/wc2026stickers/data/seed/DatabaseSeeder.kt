@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.seed
+package com.wc2026stickers.app.data.seed
 
 import androidx.room.withTransaction
 import com.wc2026stickers.app.data.db.AppDatabase

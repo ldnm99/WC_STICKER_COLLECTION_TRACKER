@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.search
+package com.wc2026stickers.app.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

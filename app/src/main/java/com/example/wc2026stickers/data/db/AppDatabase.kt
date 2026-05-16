@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.db
+package com.wc2026stickers.app.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.components
+package com.wc2026stickers.app.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

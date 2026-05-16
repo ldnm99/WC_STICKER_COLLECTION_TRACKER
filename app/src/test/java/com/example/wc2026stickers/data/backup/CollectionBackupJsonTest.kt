@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.backup
+package com.wc2026stickers.app.data.backup
 
 import java.time.Instant
 import org.junit.Assert.assertEquals

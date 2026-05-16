@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.db
+package com.wc2026stickers.app.data.db
 
 import androidx.room.TypeConverter
 import com.wc2026stickers.app.data.db.entities.StickerType

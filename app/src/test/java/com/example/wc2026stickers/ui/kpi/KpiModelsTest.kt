@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.kpi
+package com.wc2026stickers.app.ui.kpi
 
 import com.wc2026stickers.app.data.db.dao.TeamKpiStats
 import org.junit.Assert.assertEquals

@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.teams
+package com.wc2026stickers.app.ui.teams
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

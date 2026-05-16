@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.teamdetail
+package com.wc2026stickers.app.ui.teamdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

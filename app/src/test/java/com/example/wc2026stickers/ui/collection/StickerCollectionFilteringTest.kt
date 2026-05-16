@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.collection
+package com.wc2026stickers.app.ui.collection
 
 import com.wc2026stickers.app.data.db.dao.StickerWithQuantity
 import com.wc2026stickers.app.data.db.entities.StickerType

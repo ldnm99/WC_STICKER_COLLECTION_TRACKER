@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app
+package com.wc2026stickers.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

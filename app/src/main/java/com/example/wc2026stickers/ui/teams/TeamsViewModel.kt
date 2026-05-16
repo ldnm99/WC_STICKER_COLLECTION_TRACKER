@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.teams
+package com.wc2026stickers.app.ui.teams
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

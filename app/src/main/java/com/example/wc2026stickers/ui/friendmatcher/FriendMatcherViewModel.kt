@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.friendmatcher
+package com.wc2026stickers.app.ui.friendmatcher
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

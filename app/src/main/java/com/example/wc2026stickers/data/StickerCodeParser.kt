@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data
+package com.wc2026stickers.app.data
 
 internal data class StickerCode(
     val teamCode: String,

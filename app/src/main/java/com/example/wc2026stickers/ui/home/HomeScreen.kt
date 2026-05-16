@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.home
+package com.wc2026stickers.app.ui.home
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts

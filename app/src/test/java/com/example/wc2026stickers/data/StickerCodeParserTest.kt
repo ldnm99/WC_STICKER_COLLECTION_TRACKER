@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data
+package com.wc2026stickers.app.data
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

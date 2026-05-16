@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.friendmatcher
+package com.wc2026stickers.app.ui.friendmatcher
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.wc2026stickers.app.data.db.dao.StickerWithQuantity
 import com.wc2026stickers.app.ui.collection.confederationDisplayLabel
 import com.wc2026stickers.app.ui.collection.stickerTypeDisplayLabel
 import com.wc2026stickers.app.ui.share.StickerShareFormatter
@@ -378,7 +379,7 @@ private fun FriendMatchRow(
     )
 }
 
-private fun buildFriendMatchSupportingText(sticker: com.wc2026stickers.app.data.db.dao.StickerWithQuantity): String =
+private fun buildFriendMatchSupportingText(sticker: StickerWithQuantity): String =
     buildString {
         append(stickerTypeDisplayLabel(sticker.stickerType))
         append(" • ")

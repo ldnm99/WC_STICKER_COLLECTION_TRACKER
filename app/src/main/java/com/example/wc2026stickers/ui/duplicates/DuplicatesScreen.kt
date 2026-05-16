@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.duplicates
+package com.wc2026stickers.app.ui.duplicates
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +47,7 @@ import com.wc2026stickers.app.ui.collection.StickerCollectionFilterState
 import com.wc2026stickers.app.ui.collection.StickerCollectionSortOption
 import com.wc2026stickers.app.ui.collection.confederationDisplayLabel
 import com.wc2026stickers.app.ui.collection.stickerTypeDisplayLabel
+import com.wc2026stickers.app.ui.collection.StickerCollectionUiState
 import com.wc2026stickers.app.ui.components.StickerCollectionFilterBar
 import com.wc2026stickers.app.ui.share.StickerShareFormatter
 import kotlinx.coroutines.launch
@@ -174,7 +175,7 @@ private fun EmptyDuplicatesState(modifier: Modifier = Modifier) {
 
 @Composable
 private fun EmptyFilteredDuplicatesState(
-    uiState: com.wc2026stickers.app.ui.collection.StickerCollectionUiState,
+    uiState: StickerCollectionUiState,
     sortOptions: List<StickerCollectionSortOption>,
     onFilterChange: (StickerCollectionFilterState) -> Unit,
     modifier: Modifier = Modifier

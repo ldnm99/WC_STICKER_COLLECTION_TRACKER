@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.history
+package com.wc2026stickers.app.ui.history
 
 import com.wc2026stickers.app.data.db.dao.StickerCollectionHistoryRecord
 import org.junit.Assert.assertEquals

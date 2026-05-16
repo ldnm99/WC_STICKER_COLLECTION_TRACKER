@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.duplicates
+package com.wc2026stickers.app.ui.duplicates
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

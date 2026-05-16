@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.friendmatcher
+package com.wc2026stickers.app.ui.friendmatcher
 
 import com.wc2026stickers.app.data.db.dao.StickerWithQuantity
 

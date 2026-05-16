@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.repository
+package com.wc2026stickers.app.data.repository
 
 import androidx.room.withTransaction
 import com.wc2026stickers.app.data.StickerCodeParser

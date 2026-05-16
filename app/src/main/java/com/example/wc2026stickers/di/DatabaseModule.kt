@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.di
+package com.wc2026stickers.app.di
 
 import android.content.Context
 import androidx.room.Room

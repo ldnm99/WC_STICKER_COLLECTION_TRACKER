@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.db.dao
+package com.wc2026stickers.app.data.db.dao
 
 import android.content.Context
 import androidx.room.Room

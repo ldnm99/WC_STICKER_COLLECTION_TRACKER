@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.seed
+package com.wc2026stickers.app.data.seed
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

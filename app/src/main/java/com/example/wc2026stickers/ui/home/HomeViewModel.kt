@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.home
+package com.wc2026stickers.app.ui.home
 
 import android.content.Context
 import android.net.Uri
@@ -14,6 +14,7 @@ import com.wc2026stickers.app.data.repository.StickerRepository
 import com.wc2026stickers.app.ui.history.CollectionHistorySummary
 import com.wc2026stickers.app.ui.history.calculateCollectionHistorySummary
 import com.wc2026stickers.app.ui.kpi.HomeKpiUiModel
+import com.wc2026stickers.app.data.db.dao.StickerCollectionHistoryRecord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.IOException
@@ -60,8 +61,8 @@ private data class FavoriteAndKpiData(
 )
 
 private data class CollectionHistoryData(
-    val recentUpdates: List<com.wc2026stickers.app.data.db.dao.StickerCollectionHistoryRecord>,
-    val collectedStickers: List<com.wc2026stickers.app.data.db.dao.StickerCollectionHistoryRecord>
+    val recentUpdates: List<StickerCollectionHistoryRecord>,
+    val collectedStickers: List<StickerCollectionHistoryRecord>
 )
 
 @HiltViewModel

@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.db
+package com.wc2026stickers.app.data.db
 
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper

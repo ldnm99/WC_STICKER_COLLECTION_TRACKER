@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.ui.home
+package com.wc2026stickers.app.ui.home
 
 import com.wc2026stickers.app.data.db.dao.TeamWithProgress
 import org.junit.Assert.assertEquals

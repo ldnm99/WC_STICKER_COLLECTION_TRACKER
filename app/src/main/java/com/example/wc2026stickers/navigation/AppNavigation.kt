@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.navigation
+package com.wc2026stickers.app.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType

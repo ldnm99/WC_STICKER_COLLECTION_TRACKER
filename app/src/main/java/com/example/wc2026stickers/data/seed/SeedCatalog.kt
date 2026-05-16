@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.data.seed
+package com.wc2026stickers.app.data.seed
 
 data class TeamSeedEntry(
     val code: String,

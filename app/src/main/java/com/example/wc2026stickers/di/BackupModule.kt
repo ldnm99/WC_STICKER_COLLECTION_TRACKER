@@ -1,4 +1,4 @@
-﻿package com.wc2026stickers.app.di
+package com.wc2026stickers.app.di
 
 import com.wc2026stickers.app.data.backup.AndroidCollectionBackupStorage
 import com.wc2026stickers.app.data.backup.CollectionBackupStorage
