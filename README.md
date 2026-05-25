@@ -128,12 +128,13 @@ If you have a pre-built `.apk` file:
 
 ## Screenshots
 
-> Add screenshots here — run the app on a Pixel 6 emulator (API 33+), take screenshots,  
-> save them to `screenshots/` and embed them below.
+| Home Dashboard | Browse by Team | Quick Add |
+|:--------------:|:--------------:|:---------:|
+| <img src="screenshots/landing_page.png" width="200" alt="Home dashboard"/> | <img src="screenshots/add_sticker.png" width="200" alt="Sticker grid with quantity picker"/> | <img src="screenshots/quick_add.png" width="200" alt="Quick Add screen"/> |
 
-| Home | Teams | Quick Add |
-|------|-------|-----------|
-| *(coming soon)* | *(coming soon)* | *(coming soon)* |
+| Duplicates | KPI Insights | Friend Matcher |
+|:----------:|:------------:|:--------------:|
+| <img src="screenshots/duplicates.png" width="200" alt="Duplicates list"/> | <img src="screenshots/kpis.png" width="200" alt="KPI insights"/> | <img src="screenshots/friend_matcher.png" width="200" alt="Friend Matcher"/> |
 
 ---
 
