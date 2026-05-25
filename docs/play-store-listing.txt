@@ -80,7 +80,7 @@ DATA SAFETY (for Play Console Data Safety form)
 Does your app collect or share any of the required user data types? → NO
 Does your app use security practices? → App data is not encrypted (local SQLite)
 Does your app provide a way for users to request that data be deleted? → Not applicable (no data collected)
-Privacy policy URL: https://<your-github-username>.github.io/WC2026Stickers/privacy-policy.html
+Privacy policy URL: https://ldnm99.github.io/WC_STICKER_COLLECTION_TRACKER/privacy-policy.html
 
 --------------------------------------------------------------------------------
 CATEGORY

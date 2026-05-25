@@ -55,8 +55,8 @@ Each team has **20 stickers**: Badge (foil) · Team Photo · 18 Players
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/<your-username>/wc2026-stickers.git
-   cd wc2026-stickers
+   git clone https://github.com/ldnm99/WC_STICKER_COLLECTION_TRACKER.git
+   cd WC_STICKER_COLLECTION_TRACKER
    ```
 
 2. **Open in Android Studio**
@@ -126,6 +126,17 @@ If you have a pre-built `.apk` file:
 
 ---
 
+## Screenshots
+
+> Add screenshots here — run the app on a Pixel 6 emulator (API 33+), take screenshots,  
+> save them to `screenshots/` and embed them below.
+
+| Home | Teams | Quick Add |
+|------|-------|-----------|
+| *(coming soon)* | *(coming soon)* | *(coming soon)* |
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -173,4 +184,4 @@ app/src/main/java/com/wc2026stickers/app/
 
 ## License
 
-Private repository — personal use only.
+MIT — see [LICENSE](LICENSE) for details.
