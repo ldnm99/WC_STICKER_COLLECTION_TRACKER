@@ -4,9 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wc2026stickers.app.data.repository.StickerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,18 +38,31 @@ class QuickAddViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(QuickAddUiState())
     val uiState: StateFlow<QuickAddUiState> = _uiState.asStateFlow()
 
-    fun onInputChanged(text: String) {
-        _uiState.update { it.copy(inputText = text, addedCount = 0, sessionSummary = null) }
-        viewModelScope.launch { parseInput(text) }
+    private val _inputText = MutableStateFlow("")
+
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    private val parsedEntries = _inputText
+        .debounce(200)
+        .flatMapLatest { text ->
+            flow {
+                val tokens = text.trim().split(Regex("[,\\s]+")).filter { it.isNotBlank() }
+                val entries = tokens.map { token ->
+                    val id = repository.resolveStickerId(token)
+                    ParsedEntry(raw = token, stickerId = id)
+                }
+                emit(entries)
+            }
+        }
+
+    init {
+        parsedEntries
+            .onEach { entries -> _uiState.update { it.copy(entries = entries) } }
+            .launchIn(viewModelScope)
     }
 
-    private suspend fun parseInput(text: String) {
-        val tokens = text.trim().split(Regex("[,\\s]+")).filter { it.isNotBlank() }
-        val entries = tokens.map { token ->
-            val id = repository.resolveStickerId(token)
-            ParsedEntry(raw = token, stickerId = id)
-        }
-        _uiState.update { it.copy(entries = entries) }
+    fun onInputChanged(text: String) {
+        _inputText.value = text
+        _uiState.update { it.copy(inputText = text, addedCount = 0, sessionSummary = null) }
     }
 
     fun addAll() {
@@ -78,6 +97,7 @@ class QuickAddViewModel @Inject constructor(
                     sessionSummary = sessionSummary
                 )
             }
+            _inputText.value = ""
         }
     }
 }
