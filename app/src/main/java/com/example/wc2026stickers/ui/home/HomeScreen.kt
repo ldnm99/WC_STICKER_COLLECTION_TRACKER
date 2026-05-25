@@ -2,6 +2,7 @@ package com.wc2026stickers.app.ui.home
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,13 +10,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +42,6 @@ import com.wc2026stickers.app.data.backup.CollectionBackupJson
 import com.wc2026stickers.app.data.backup.CollectionRestoreMode
 import com.wc2026stickers.app.ui.components.StatCard
 import com.wc2026stickers.app.ui.history.CollectionHistorySummary
-import com.wc2026stickers.app.ui.history.RecentCollectionActivity
 import com.wc2026stickers.app.ui.kpi.HomeKpiUiModel
 import com.wc2026stickers.app.ui.kpi.KpiPriority
 import java.time.Instant
@@ -286,12 +291,12 @@ fun HomeScreen(
                 )
             }
 
-            CollectionHistorySection(history = state.collectionHistory)
-
             KpiInsightsSection(
                 insights = state.kpiInsights,
                 onInsightClick = { onNavigateToKpiRanking(it.routeKey) }
             )
+
+            CollectionHistorySection(history = state.collectionHistory)
         }
     }
 }
@@ -301,78 +306,72 @@ private fun CollectionHistorySection(
     history: CollectionHistorySummary,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Collection history", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
-                text = "Recent changes and milestone moments from your sticker collection.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                text = "Collection history",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = if (expanded) "Collapse history" else "Expand history",
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                )
+            }
         }
 
-        if (history.recentActivity.isEmpty() && history.reachedMilestones.isEmpty()) {
-            OutlinedCard(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "No history yet",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "Add stickers from a team page or Quick Add and your latest activity will show up here.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        } else {
-            history.nextMilestone?.let { nextMilestone ->
-                ElevatedCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Text(
-                            text = "Next milestone",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = nextMilestone.label,
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "${nextMilestone.remainingCount} sticker${if (nextMilestone.remainingCount == 1) "" else "s"} to go (${history.collectedCount}/${nextMilestone.targetCount}).",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-
-            if (history.reachedMilestones.isNotEmpty()) {
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        Text(
-                            text = "Milestones",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        history.reachedMilestones.takeLast(3).asReversed().forEach { milestone ->
+        AnimatedVisibility(visible = expanded) {
+            if (history.recentActivity.isEmpty() && history.reachedMilestones.isEmpty()) {
+                Text(
+                    text = "Add stickers from a team page or Quick Add and your latest activity will show up here.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+            } else {
+                OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                        history.nextMilestone?.let { next ->
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Next: ${next.label}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Text(
+                                    text = "${next.remainingCount} to go",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            if (history.recentActivity.isNotEmpty()) {
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                            }
+                        }
+
+                        history.recentActivity.take(5).forEachIndexed { index, activity ->
+                            if (index > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 10.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -381,19 +380,19 @@ private fun CollectionHistorySection(
                                     verticalArrangement = Arrangement.spacedBy(2.dp)
                                 ) {
                                     Text(
-                                        text = milestone.label,
-                                        style = MaterialTheme.typography.bodyLarge,
+                                        text = "${activity.teamFlagEmoji} ${activity.stickerId.toDisplayStickerCode()}",
+                                        style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = FontWeight.SemiBold
                                     )
                                     Text(
-                                        text = "${milestone.targetCount} sticker${if (milestone.targetCount == 1) "" else "s"}",
+                                        text = "${activity.teamName} · ${activity.label}",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 Text(
-                                    text = formatHistoryTimestamp(milestone.reachedAt),
-                                    style = MaterialTheme.typography.labelMedium,
+                                    text = formatHistoryTimestamp(activity.lastUpdatedAt),
+                                    style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
@@ -401,71 +400,8 @@ private fun CollectionHistorySection(
                     }
                 }
             }
-
-            if (history.recentActivity.isNotEmpty()) {
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Text(
-                            text = "Recent activity",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                        history.recentActivity.take(4).forEach { activity ->
-                            RecentActivityRow(activity = activity)
-                        }
-                    }
-                }
-            }
         }
     }
-}
-
-@Composable
-private fun RecentActivityRow(
-    activity: RecentCollectionActivity,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "${activity.teamFlagEmoji} ${activity.stickerId.toDisplayStickerCode()}",
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold
-            )
-            Text(
-                text = formatHistoryTimestamp(activity.lastUpdatedAt),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-        Text(
-            text = "${activity.teamName} · ${activity.label}",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            text = activity.toActivitySummary(),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f)
-        )
-    }
-}
-
-private fun RecentCollectionActivity.toActivitySummary(): String = when {
-    isRemoved -> "Removed from the collection."
-    isNewSticker -> "First copy collected."
-    quantityOwned <= 1 -> "Quantity updated to 1."
-    else -> "Quantity updated to $quantityOwned copies."
 }
 
 private fun String.toDisplayStickerCode(): String = replace("-", "")
